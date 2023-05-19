@@ -1,33 +1,52 @@
-import { TaskRow } from "./TaskRow"
-export const Task = ({ task, toggleTask, showCompeted = false }) => {
+import { useState } from "react";
 
-  const taskTableRows = (doneValue) => {
+export const Task = (props) => {
+    const {id, descripcion, completada, onEliminar, onEditar, onCompletar} = props;
+    
+    const [modoEdicion, setModoEdicion] = useState (false);
+    const [nuevaDescripcion, setNuevaDescripcion] = useState(descripcion);
+    const [estaCompletado, setEstaCompletado] = useState(completada);
+
+    const handleEliminar = () => {
+        onEliminar(id);
+    };
+
+    const handleEditar = () => {
+        if (modoEdicion) {
+            onEditar(id, nuevaDescripcion);
+            setModoEdicion(false);
+        }   else {
+            setModoEdicion(true);
+        }
+    };
+
+    const handlechange = (evento) => {
+        setNuevaDescripcion (evento.target.value);
+    };
+
+    const handleCompletado = () => {
+        setEstaCompletado(!estaCompletado);
+         onCompletar(id, estaCompletado);
+        
+    };
+
+    
     return (
-      task
-        .filter(task => task.done === doneValue) 
-        .map(task => (
-             <TaskRow task={task} key={task.name} toggleTask={toggleTask}/>
-            ))
-    )
-  }
+        <li>
+        <input id={id} type="checkbox" checked={estaCompletado} onChange={handleCompletado}/>
+      {modoEdicion ? ( 
+        <input
+         type="text"
+         value={nuevaDescripcion}
+         onChange={handlechange}
+        />
 
-  return (
-<table>
-      <thead>
-        <tr>
-          <th>Tareas</th>
-       </tr>
-      </thead>
-      <tbody>
-         {
-           taskTableRows(showCompeted)
-          }
-      </tbody>
-    </table>
-  )
-}
-
-
-
-  
-
+      ) : (
+        <label htmlFor={id}>{descripcion}</label>
+      )}
+      <br />
+      <button onClick={handleEditar}>{modoEdicion ? "Guardar" : "Editar"}</button>
+      <button onClick={()=>handleEliminar()}>Eliminar</button>
+        </li>
+    );
+};

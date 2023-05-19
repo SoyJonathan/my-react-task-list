@@ -1,59 +1,43 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { Header } from "./components/Header";
 import { TaskList } from "./components/TaskList";
-import { Task } from "./components/Task"
-import { VisibilityControl } from "./components/VisibilityControl";
+import { useState, useEffect } from "react";
+import useTask from "./components/useTask";
+
 
 function App() {
-  
-  const [taskItems, setTaskItems] = useState([])
-  const [showCompleted, setShowCompleted] = useState (false)
- 
-useEffect(() => {
-    let data = localStorage.getItem("task")
-    if (data) {
-      setTaskItems(JSON.parse(data))
-    }
-  }, [])
+const option = useTask()
+const {listaTareas, eliminarTarea, editarTarea, agregar, tareaNueva, setNuevaTarea, completarTarea} = option
 
-  useEffect(() => {
-    localStorage.setItem("task", JSON.stringify(taskItems))
-  }, [taskItems]) 
 
-  function crearTarea(taskName) {
-    if (!taskItems.find(task => task.name === taskName)) {
-      setTaskItems([...taskItems, {name: taskName, done:false} ])
-    }
-  }
+  const handlerChange = evento => {
+    setNuevaTarea(evento.target.value);
+  };
 
-  const toggleTask = task => {
-    setTaskItems(
-      taskItems.map(t => (t.name == task.name) ? { ...t, done: !t.done } : t)   
+    return (
+      <div className="app">
+        <Header/>
+        <form className="f1">
+          <input className="primerimput"
+          type="text"
+          maxLength="25"
+          value={tareaNueva}
+          onChange={handlerChange}
+          placeholder="Ingrese Tarea"
+          />
+          <button className="primerboton" type="submit" onClick={agregar}>
+            Agregar Tarea
+          </button>
+        </form>
+        <TaskList
+        
+          pendientes={listaTareas}
+          onEliminar={eliminarTarea}
+          onEditar={editarTarea}
+          onCompletar={completarTarea}
+        />
+
+      </div>
     );
   }
 
-  
-  
-  const limpiarTarea = () => {
-    setTaskItems(taskItems.filter(task => !task.done))
-    setShowCompleted(false)
-  }
-
-  
-  
-return (
-  <div className="App">
-    <TaskList crearTarea={crearTarea}/>
-    <Task task={taskItems} toggleTask={toggleTask} />
-    <VisibilityControl
-      isChecked={showCompleted}
-      setShowCompleted={(checked) => setShowCompleted(checked)} limpiarTarea={limpiarTarea} />
-    {showCompleted === true && (
-        <Task task={taskItems} toggleTask={toggleTask} showCompeted={showCompleted}
-      />
-    )}
-   </div>
-);  
-}
-export default App;
-
+  export default App;

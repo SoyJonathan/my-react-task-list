@@ -1,19 +1,32 @@
 import { useState } from "react";
+import { Task } from "./Task";
 
-export const TaskList = ({crearTarea}) => {
-  const [nuevaTarea, setNuevaTarea] = useState("")
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-  crearTarea(nuevaTarea)
-  setNuevaTarea("")
-}
+export const TaskList = (props) => {
+    const {pendientes, onEliminar, onEditar, onCompletar} = props;
+    
+    const handleElinar = (id) => {
+       
+        onEliminar(id);
+    }
 
-  return (
-    <form onSubmit={handleSubmit}>
-        <input type="text" placeholder="Nueva tarea" value={nuevaTarea} onChange={(e) => setNuevaTarea(e.target.value)
-        } />
-      <button>Guardar</button>
-      </form>
-  )
-}
+    const handleEditar = (id, nuevaDescripcion)=> {
+        onEditar(id, nuevaDescripcion);
+    }
+
+
+    return (
+        <ul>
+            {pendientes.map((tarea) => (
+            <Task
+                key={tarea.id}
+                id={tarea.id}
+                descripcion={tarea.descripcion}
+                completada={tarea.completada}
+                onEliminar={handleElinar}
+                onEditar={handleEditar}
+                onCompletar={onCompletar}
+            />
+            ))}
+        </ul>
+    );
+  } 
