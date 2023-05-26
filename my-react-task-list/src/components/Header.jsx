@@ -1,6 +1,9 @@
-export const Header = () =>{
-    
-    return <header>
-        <h1> <a href="/">To Do App</a></h1>
-    </header>
+import React from 'react'
+
+const Header = () => {
+  return (
+    <h1>To do App</h1>
+  )
 }
+
+export default Header

@@ -1,59 +1,96 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
+const useTask = () => {
+  const [arrayTask, setArrayTask] = useState([]);
+  const [taskPending, setTaskPending] = useState(arrayTask.length);
+  const miStorage = window.localStorage;
 
-const useTask = ()=> {
-
-    const [listaTareas, setListaTareas] = useState(
-        JSON.parse(localStorage.getItem("listaTareas")) || tareasPendientes
-      );
-      const [tareaNueva, setNuevaTarea] = useState("");
-    
-      useEffect(() => {
-        localStorage.setItem("listaTareas", JSON.stringify(listaTareas));
-      });
-// Crear tareas:
-const agregar = evento => {
-    evento.preventDefault();
-    if (tareaNueva.trim() !== "") {
-      const nuevaTareaConId = {
-        id: listaTareas.length + 1,
-        descripcion: tareaNueva ,
-        completado: false,
-      };
-      setListaTareas([...listaTareas, nuevaTareaConId]);
-      setNuevaTarea("");
-    }
-}
-// Hecho
-// Borrar tareas
-const eliminarTarea = (id,) => {
-    const nuevasTareas = listaTareas.filter(tarea => tarea.id !== id);
-    setListaTareas(nuevasTareas);
-    console.log("aqui se elimina")
-    console.log(nuevasTareas)
-    };
-
-    // Actualizar tareas
-    const editarTarea = (id, nuevaDescripcion) => {
-      const nuevasTareas = listaTareas.map(tarea => {
-        if (tarea.id ===id) {
-          tarea.descripcion = nuevaDescripcion;
+  useEffect(() => {
+    var dataTasks = JSON.parse(miStorage.getItem("dataTasks"));
+    if (dataTasks) {
+      setArrayTask(dataTasks);
+      let cantidadPending = 0;
+      dataTasks?.map((task) => {
+        if (task.state == false) {
+          cantidadPending++;
         }
-        return tarea;
       });
-      setListaTareas(nuevasTareas);
-
+      setTaskPending(cantidadPending);
     }
-    const completarTarea = (id) => {
-      const nuevasTareas = listaTareas.map((tarea) => {
-        if (tarea.id === id) {
-          tarea.completada = !tarea.completada;
+  }, [taskPending]);
+
+  const handleClickClear = () => {
+    if (arrayTask.length > 0) {
+      miStorage.clear();
+      setTaskPending(0);
+      setArrayTask([]);
+    }
+  };
+
+  const handleClickDelete = (id) => {
+    var dataTasks = JSON.parse(miStorage.getItem("dataTasks"));
+    let deleteTask = dataTasks.filter((task) => task.id != id);
+    miStorage.setItem("dataTasks", JSON.stringify(deleteTask));
+    setArrayTask(deleteTask);
+    setTaskPending(taskPending - 1);
+  };
+
+  const handleClickRadio = (boolean, idTask) => {
+    var dataTasks = JSON.parse(miStorage.getItem("dataTasks"));
+    let updateTask = dataTasks.map((task) => {
+      if (task.id == idTask) {
+        task.state = boolean;
+      }
+      return task;
+    });
+    miStorage.setItem("dataTasks", JSON.stringify(updateTask));
+    if (boolean) setTaskPending(taskPending - 1);
+    else setTaskPending(taskPending + 1);
+  };
+
+  const handleClickUpdate = (dataUpdateTask) => {
+    miStorage.setItem("dataTasks", JSON.stringify(dataUpdateTask));
+    setTaskPending(null);
+  };
+
+  const handleClickAdd = (dataNewTask) => {
+    if (dataNewTask.name.length > 0) {
+      if (dataNewTask.name.length > 3) {
+        var dataTasks = (dataTasks = JSON.parse(
+          miStorage.getItem("dataTasks")
+        ));
+        if (dataTasks) {
+          dataTasks.push({
+            id: Math.max(...dataTasks.map((task) => task.id)) + 1,
+            task: dataNewTask,
+            state: false,
+          });
+        } else {
+          dataTasks = [];
+          dataTasks.push({ id: 1, task: dataNewTask, state: false });
         }
-        return tarea;
-      });
-      setListaTareas(nuevasTareas);
-      localStorage.setItem("listaTareas", JSON.stringify(listaTareas));
-    };
-    return {listaTareas, eliminarTarea, editarTarea, agregar, tareaNueva, setNuevaTarea, completarTarea}
-}
-export default useTask
+        miStorage.setItem("dataTasks", JSON.stringify(dataTasks));
+        setTaskPending(taskPending + 1);
+      } else {
+        alert("la tarea debe tener al menos tres caracteres");
+      }
+    } else {
+      alert("escribe alguna tarea");
+    }
+  };
+  return [
+    {
+      arrayTask,
+      taskPending,
+    },
+    {
+      handleClickClear,
+      handleClickDelete,
+      handleClickRadio,
+      handleClickUpdate,
+      handleClickAdd,
+    },
+  ];
+};
+
+export default useTask;
