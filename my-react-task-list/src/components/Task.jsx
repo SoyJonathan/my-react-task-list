@@ -66,4 +66,4 @@ const Task = ({ dataTask, onClickDelete, onClickRadio, onClickUpdate }) => {
   );
 };
 
-export default Task;  
+export default Task;
