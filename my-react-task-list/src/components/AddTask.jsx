@@ -5,7 +5,7 @@ const initialState = {
   description: "",
 };
 
-const AddTask = ({ onClickAdd }) => {
+ export const AddTask = ({ onClickAdd }) => {
   const [data, setData] = useState(initialState);
 
   const handleChange = (e) => {
@@ -62,4 +62,3 @@ const AddTask = ({ onClickAdd }) => {
   );
 };
 
-export default AddTask;

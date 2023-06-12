@@ -1,10 +1,10 @@
-import Header from "./Header";
-import ButtonDanger from "./ButtonDanger";
-import AddTask from "./AddTask";
-import TaskList from "./TaskList";
-import useTask from "../components/useTask";
+import { Header } from "./Header";
+import { ButtonDanger } from "./ButtonDanger";
+import { AddTask } from "./AddTask";
+import { TaskList } from "./TaskList";
+import { useTask } from "../components/useTask";
 
-const MainDiv = () => {
+export const MainDiv = () => {
   const [states, actions] = useTask();
   const { arrayTask, taskPending } = states;
   const {
@@ -30,4 +30,3 @@ const MainDiv = () => {
   );
 };
 
-export default MainDiv;

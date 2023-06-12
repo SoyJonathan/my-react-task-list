@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Modal } from "./Modal";
 
-const Task = ({ dataTask, onClickDelete, onClickRadio, onClickUpdate }) => {
+export const Task = ({ dataTask, onClickDelete, onClickRadio, onClickUpdate }) => {
   const [active, setActive] = useState(dataTask.state);
   const { name, description } = dataTask.task;
   const { id } = dataTask;
@@ -66,4 +66,3 @@ const Task = ({ dataTask, onClickDelete, onClickRadio, onClickUpdate }) => {
   );
 };
 
-export default Task;

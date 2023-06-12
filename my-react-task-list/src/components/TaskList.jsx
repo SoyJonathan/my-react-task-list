@@ -1,8 +1,7 @@
-import Task from "./Task"
+import { Task } from "./Task"
 
-const TaskList = ({onClickDelete, onClickRadio, arrayTask, onClickUpdate}) => {
+export const TaskList = ({onClickDelete, onClickRadio, arrayTask, onClickUpdate}) => {
 
-  
   return (
     <div>
         {
@@ -13,5 +12,3 @@ const TaskList = ({onClickDelete, onClickRadio, arrayTask, onClickUpdate}) => {
     </div>
   )
 }
-
-export default TaskList
