@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Input, Button } from '@chakra-ui/react'
+
 
 export const Modal = ({ dataTask, onClickUpdate }) => {
   const miStorage = window.localStorage;
@@ -37,22 +39,20 @@ export const Modal = ({ dataTask, onClickUpdate }) => {
 
   return (
     <div
-      className="modal fade"
       id={`exampleModalCenter${dataTask.id}`}
       tabIndex={-1}
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
-      <div className="modal-dialog modal-dialog-centered" role="document">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="exampleModalLongTitle">
+      <div>
+        <div>
+          <div>
+            <h5 id="exampleModalLongTitle">
               Editar tarea
             </h5>
             <button
               type="button"
-              className="close"
               data-dismiss="modal"
               aria-label="Close"
             >
@@ -60,40 +60,55 @@ export const Modal = ({ dataTask, onClickUpdate }) => {
             </button>
           </div>
           <div className="modal-body">
-            <input
+            <Input
+              mb='5'
+              size='sm'
+              textColor='black'
+              bg='white'
               type="text"
-              className="form-control mb-3"
               name="name"
-              placeholder="name task"
+              placeholder="Edita la tarea"
               value={valueInput.name}
               onChange={(e) => handleChangeInput(e)}
             />
-            <input
+            <Input
+              size='sm'
+              textColor='black'
               type="text"
-              className="form-control"
+              bg='white'
+              errorBorderColor='black'
               name="description"
-              placeholder="description task"
+              placeholder="Escribe una descripcion"
               value={valueInput.description}
               onChange={(e) => handleChangeInput(e)}
             />
           </div>
           <div className="modal-footer">
-            <button
+            <Button size='xs'
+              m='2'
+              bg='brown'
+              color='white'
+              _hover={{
+                background:'red'
+              }}
               type="button"
-              className="btn btn-secondary"
-              data-dismiss="modal"
               onClick={() => handleChangeClose()}
             >
               Cancelar
-            </button>
-            <button
+            </Button>
+            <Button size='xs'
+              bg='green.400'
+              color='white'
+              _hover={{
+                background:'green'
+              }}
               type="button"
               className="btn btn-primary"
               data-dismiss="modal"
               onClick={() => handleChangeSave()}
             >
               Guardar
-            </button>
+            </Button> 
           </div>
         </div>
       </div>

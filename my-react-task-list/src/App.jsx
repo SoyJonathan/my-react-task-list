@@ -1,34 +1,51 @@
 import { MainDiv } from "./components/MainDiv.jsx";
-import { BrowserRouter ,Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import { HomePage } from "./components/HomePage.jsx"
 import { AboutUsPage } from "./components/AboutUsPage.jsx"
 import { TareasPage } from "./components/TareasPage.jsx"
-import { FormContact } from "./components/Form.jsx";
+import { FormContact } from "./components/Form.jsx"
+import * as React from 'react'
+import { ChakraProvider } from '@chakra-ui/react'
+import { Box, Button, Text, Image } from '@chakra-ui/react'
+
+
+
 
 function App() {
   
   return (
+    <ChakraProvider>
     <BrowserRouter>
-    <div className="container mainTask d-block">
-      <nav className="mt-3 mb-3">
-        <Link to="/" className="mr-3">
-          Home
-          </Link>
-        <Link to="/AboutUs" className="mr-3">
-          AboutUs
-          </Link>
-          <Link to="/MainDiv" className="mr-3">
-          Main
-        </Link>
-        <Link to="/Formulario">Contacto</Link>
-      </nav>
+        <div>
+          <Box bg='tomato' w='100%' p={4} color='white' padding='5'>
+            <div>
+              <Text textAlign='center' >
+              <Link to="/" >
+                  <Button m='2' color='white' background={"purple.900"} _hover={{
+                    background: 'brown'
+                  }}>Home</Button>
+            </Link>
+            <Link to="/AboutUs" className="mr-3">
+              <Button m='2' color='white' background={"purple.900"} _hover={{
+                    background: 'brown'
+                  }}>AboutUs</Button>
+            </Link>
+            <Link to="/MainDiv" className="mr-3">
+              <Button m='2' color='white' background={"purple.900"} _hover={{
+                    background: 'brown'
+                  }}>Main</Button>
+            </Link>
+              <Link to="/Formulario"><Button m='2' color='white' background={"purple.900"} _hover={{
+                    background: 'brown'
+                  }}>Contacto</Button></Link>
+            </Text></div>
       <Routes>
-        <Route
+        <Route 
           path="/"
           element={
             <HomePage />  
           }
-        ></Route>
+        ></Route >
         <Route
           path="/aboutus"
           element={
@@ -46,16 +63,18 @@ function App() {
           element={
               <TareasPage />
           }
-        ></Route>
+        ></Route >
         <Route
             path="/Formulario"
           element={
               <FormContact/>
           }
         ></Route>
-      </Routes>
-      </div>
-      </BrowserRouter>
+            </Routes>
+            </Box>
+        </div>
+      </BrowserRouter >
+      </ChakraProvider>
   );
 }
 

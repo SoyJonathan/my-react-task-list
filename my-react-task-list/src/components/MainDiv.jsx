@@ -1,4 +1,3 @@
-import { Header } from "./Header";
 import { ButtonDanger } from "./ButtonDanger";
 import { AddTask } from "./AddTask";
 import { TaskList } from "./TaskList";
@@ -16,8 +15,8 @@ export const MainDiv = () => {
   } = actions;
 
   return (
-    <div className="containerTask card p-4">
-      <Header />
+    <div>
+      
       <AddTask onClickAdd={handleClickAdd} />
       <TaskList
         onClickDelete={handleClickDelete}
